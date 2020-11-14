@@ -19,6 +19,7 @@ export default class extends React.Component {
     const { contractInstance, account, contractAddress } = this.props;
     return (
       <div>
+        <h2>创建合成资产</h2>
         <div>
           <p>Contract address: {contractAddress}</p>
           <p>Account: {account}</p>

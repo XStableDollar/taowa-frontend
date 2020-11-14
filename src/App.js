@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './logo.png';
 import './App.css';
 import "antd/dist/antd.css";
 import Create from './components/Create';
@@ -6,8 +6,6 @@ import List from './components/List';
 import React from "react";
 import Web3 from "web3";
 import getWeb3 from "./util/getWeb3";
-
-const appStyles = {}
 
 // const constractAddress = '0x8835F21613672fA18f5716aB0ee4878045eCf5EE';
 const constractAddress = '0xA4565fF972387139865633CECA0A9868Ab5D3f87';
@@ -63,16 +61,18 @@ class App extends React.Component {
   render() {
     const { account, contractAddress, contractInstance } = this.state;
     const props = { account, contractAddress, contractInstance };
+
     return (
-      <div className={appStyles.app}>
-        <div className={appStyles.appHeader}>
-          <h2>套娃协议</h2>
+      <div>
+        <div className="App-header">
+          <img src={logo} />
+          <h1 style={{color: "white"}}>套娃协议</h1>
           <p>无限资产的无限合成</p>
         </div>
-        <hr />
-        {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
-        <hr />
-        {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
+        <div className="App">
+          {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
+          {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
+        </div>
       </div>
     );
   }

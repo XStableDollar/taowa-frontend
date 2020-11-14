@@ -199,10 +199,14 @@ export default class extends React.Component {
     );
     return (
       <div>
-        <span>Total assets: {totalAssets}</span>
-        {mintForm}
-        {redeemForm}
+        <h2>所有合成资产({totalAssets})</h2>
         {customAssetsElem}
+        <hr />
+        <h3>向合成资产添加 token</h3>
+        {mintForm}
+        <hr />
+        <h3>销毁合成资产 & 赎回 token</h3>
+        {redeemForm}
       </div>
     );
   }
