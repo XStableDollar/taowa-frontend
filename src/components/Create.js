@@ -53,13 +53,19 @@ export default class extends React.Component {
       accountError: false,
       balance: balance,
       contractAddress: instance._address,
+      contractInstance: instance,
     });
   }
 
+   onFinish = async (values) => {
+    const { contractInstance, account } = this.state;
+    const { name, symbol, tokens } = values;
+    console.log('Received values of form:', name, symbol, tokens);
+    const result  = await contractInstance.methods.create(name, symbol).send({ from: account });
+    console.log('result: ', result)
+  };
+
   render() {
-    const onFinish = values => {
-      console.log('Received values of form:', values);
-    };
 
     return (
       <div>
@@ -69,7 +75,7 @@ export default class extends React.Component {
           <p>Account: {this.state.accountError ? "No accounts found" : this.state.account}</p>
           <p>Balance: {this.state.balance}</p>
         </div>
-        <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
+        <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off">
           <Form.Item
             label="Name"
             name="name"
