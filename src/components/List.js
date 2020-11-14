@@ -6,21 +6,6 @@ const Web3 = require('web3');
 // import BigNumber from "bignumber.js"
 const BigNumber = require('bignumber.js');
 
-const data = [
-  {
-    title: 'Title 1',
-  },
-  {
-    title: 'Title 2',
-  },
-  {
-    title: 'Title 3',
-  },
-  {
-    title: 'Title 4',
-  },
-];
-
 export default class extends React.Component {
   constructor(props) {
     super(props);
@@ -31,14 +16,36 @@ export default class extends React.Component {
   async componentWillMount() {
     const { contractInstance, account, contractAddress } = this.props;
     try {
-      // const tokenList  = await contractInstance.methods.ercAddrToCustomToken().call();
-      // console.log('tokenList:', tokenList)
       const totalAssets  = await contractInstance.methods.totalAssets().call();
+
+      const getDepositedAsset  = async(customAssetAddress, index) => {
+        console.log('index: ', index)
+        const address = await contractInstance.methods.token2symbol(customAssetAddress, index).call();
+        console.log('address: ', address)
+        return address;
+      }
+
       const getCustomAsset  = async(index) => {
         console.log('index: ', index)
         const customAssetAddress = await contractInstance.methods.customAssets(index).call();
-        const customAssetInfo = await contractInstance.methods.ercAddrToCustomToken
-        (customAssetAddress).call();
+        const customAssetInfo = await contractInstance.methods.ercAddrToCustomToken(customAssetAddress).call();
+        let depositedAsset0 = 'Empty';
+        let depositedAsset1 = 'Empty';
+        try {
+          depositedAsset0 = await getDepositedAsset(customAssetAddress, 0);
+          depositedAsset1 = await getDepositedAsset(customAssetAddress, 1);
+        } catch (error) {
+          console.log('Error: not deposit any token yet')
+        }
+
+        // const promiseArrForDepositedAsset = [];
+        // for (let i = 0; i < 2; i++) {
+        //   promiseArrForDepositedAsset.push(getDepositedAsset(customAssetAddress, i));
+        // }
+        // const depositedAssets = await Promise.all(promiseArrForDepositedAsset);
+        const depositedAssets = [depositedAsset0, depositedAsset1];
+        customAssetInfo.depositedAssets = depositedAssets
+
         return customAssetInfo;
       }
 
@@ -48,10 +55,8 @@ export default class extends React.Component {
       }
 
       const customAssets = await Promise.all(promiseArr);
-      // const customAssets  = await contractInstance.methods.customAssets(0).call();
       console.log('customAssets:', customAssets)
       this.setState({ totalAssets, customAssets })
-      // this.setState({ tokenList, customAssets })
     } catch (error) {
       console.log('error: ', error)
     }
@@ -65,7 +70,13 @@ export default class extends React.Component {
         dataSource={customAssets}
         renderItem={item => (
           <List.Item>
-            <Card title={item.name}>{item.symbol}</Card>
+            <Card title={`${item.name}(${item.symbol})`}>
+              <div>
+                <h4>Deposited Tokens</h4>
+                <p>{item.depositedAssets[0].substr(0, 10)}</p>
+                <p>{item.depositedAssets[1].substr(0, 10)}</p>
+              </div>
+            </Card>
           </List.Item>
         )}
       />
