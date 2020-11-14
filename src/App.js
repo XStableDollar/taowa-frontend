@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import "antd/dist/antd.css";
 import Create from './Create';
+import List from './List';
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
       <h3>无限资产的无限合成 </h3>
       <div>
         <Create />
+      </div>
+      <div>
+        <List />
       </div>
     </div>
   );
