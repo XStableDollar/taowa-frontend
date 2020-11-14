@@ -4,7 +4,6 @@ import "antd/dist/antd.css";
 import Create from './components/Create';
 import List from './components/List';
 import React from "react";
-import Web3 from "web3";
 import getWeb3 from "./util/getWeb3";
 
 // const constractAddress = '0x8835F21613672fA18f5716aB0ee4878045eCf5EE';
@@ -65,7 +64,7 @@ class App extends React.Component {
     return (
       <div>
         <div className="App-header">
-          <img src={logo} />
+          <img src={logo} alt="logo" />
           <h1 style={{color: "white"}}>套娃协议</h1>
           <p>无限资产的无限合成</p>
         </div>
