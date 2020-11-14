@@ -1,4 +1,4 @@
-import  {  Form, Input, Button, Checkbox  } from 'antd';
+import { Form, Input, Button, Checkbox } from 'antd';
 
 const layout = {
   labelCol: {
@@ -72,4 +72,5 @@ const Demo = () => {
     </Form>
   );
 };
+
 export default Demo;
