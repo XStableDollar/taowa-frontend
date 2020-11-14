@@ -1,13 +1,9 @@
+/* eslint no-use-before-define: 0 */
 import React from 'react';
 import { List, Input, Card, Button, Form, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import * as TruffleContract from 'truffle-contract';
-// import * as Web3 from "web3";
-const Web3 = require('web3');
-// import BigNumber from "bignumber.js"
-const BigNumber = require('bignumber.js');
 
-export default class extends React.Component {
+export default class Component extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,7 +13,7 @@ export default class extends React.Component {
     }
   }
   async componentWillMount() {
-    const { contractInstance, account, contractAddress } = this.props;
+    const { contractInstance } = this.props;
     try {
       const totalAssets  = await contractInstance.methods.totalAssets().call();
 
@@ -77,7 +73,7 @@ export default class extends React.Component {
   }
   mintMulti = async (assetInfo) => {
     const { contractInstance, account } = this.props;
-    const { totalAssets, customAssets, tokens, addressArr, amountArr } = this.state;
+    const { tokens, addressArr, amountArr } = this.state;
     const { target } = assetInfo;
     console.log('Received values of form:', tokens, addressArr, amountArr);
     console.log('target: ', target);
@@ -95,7 +91,7 @@ export default class extends React.Component {
   }
   redeem = async (assetInfo) => {
     const { contractInstance, account } = this.props;
-    const { totalAssets, customAssets, redeemAmount } = this.state;
+    const { redeemAmount } = this.state;
     const { target } = assetInfo;
     console.log('Received values of form:', redeemAmount);
     console.log('target: ', target);
@@ -108,7 +104,6 @@ export default class extends React.Component {
   };
 
   render() {
-    const { contractInstance, account, contractAddress } = this.props;
     const { totalAssets, customAssets } = this.state;
     const customAssetsElem = (
       <List
