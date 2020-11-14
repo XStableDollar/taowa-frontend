@@ -12,7 +12,8 @@ export default class extends React.Component {
     super(props);
     this.state = {
       customAssets: [],
-      tokens: []
+      tokens: [],
+      redeemAmount: 0
     }
   }
   async componentWillMount() {
@@ -79,14 +80,32 @@ export default class extends React.Component {
     const { totalAssets, customAssets, tokens, addressArr, amountArr } = this.state;
     const { target } = assetInfo;
     console.log('Received values of form:', tokens, addressArr, amountArr);
-    console.log('target: ', target)
-    const result  = await contractInstance.methods.mintMulti2(target, addressArr, amountArr).send({ from: account });
-    console.log('result: ', result)
+    console.log('target: ', target);
+    try {
+      const result  = await contractInstance.methods.mintMulti2(target, addressArr, amountArr).send({ from: account });
+      console.log('result: ', result);
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
-  async redeem() {
-
+  onRedeemFinish = (values) => {
+    const { amount } = values;
+    this.setState({ redeemAmount: amount });
   }
+  redeem = async (assetInfo) => {
+    const { contractInstance, account } = this.props;
+    const { totalAssets, customAssets, redeemAmount } = this.state;
+    const { target } = assetInfo;
+    console.log('Received values of form:', redeemAmount);
+    console.log('target: ', target);
+    try {
+      const result  = await contractInstance.methods.redeem2(target, redeemAmount).send({ from: account });
+      console.log('redeem result: ', result)
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  };
 
   render() {
     const { contractInstance, account, contractAddress } = this.props;
@@ -113,7 +132,29 @@ export default class extends React.Component {
       />
     );
 
-    const formElem = (
+    const redeemForm = (
+      <Form name="dynamic_form_nest_item" onFinish={this.onRedeemFinish} autoComplete="off">
+        <Form.Item
+          label="Amount"
+          name="amount"
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+
+    const mintForm = (
       <Form name="dynamic_form_nest_item" onFinish={this.onFormFinish} autoComplete="off">
         <Form.List name="tokens">
           {(fields, { add, remove }) => (
@@ -155,11 +196,12 @@ export default class extends React.Component {
           </Button>
         </Form.Item>
       </Form>
-    )
+    );
     return (
       <div>
         <span>Total assets: {totalAssets}</span>
-        {formElem}
+        {mintForm}
+        {redeemForm}
         {customAssetsElem}
       </div>
     );

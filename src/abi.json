@@ -424,6 +424,30 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_targetAddr",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_backAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "redeem2",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "massetRedeemed",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{

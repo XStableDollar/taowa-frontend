@@ -9,7 +9,10 @@ import getWeb3 from "./util/getWeb3";
 
 const appStyles = {}
 
-const constractAddress = '0x8835F21613672fA18f5716aB0ee4878045eCf5EE';
+// const constractAddress = '0x8835F21613672fA18f5716aB0ee4878045eCf5EE';
+const constractAddress = '0xA4565fF972387139865633CECA0A9868Ab5D3f87';
+// XSGT token: 0x364Ac8785c0f98B1419e54e9aeB209Fb2CE26348
+// hand token: 0xf456516715c75a421674B7547fACc1C224Eeb657
 const jsonInterface = require("./abi.json");
 
 class App extends React.Component {
