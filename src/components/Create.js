@@ -13,52 +13,46 @@ const jsonInterface = require("../abi.json");
 // const contractInstance = TruffleContract();
 
 export default class extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      account: "",
-      accountError: false,
-      balance: "",
-      contractAddress: "",
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
-  async componentWillMount() {
-    const { web3 } = this.props;
-    if (web3.eth.accounts.length === 0) {
-      this.setState({
-        account: "",
-        accountError: true,
-      });
-      return;
-    }
+  // async componentWillMount() {
+  //   const { web3 } = this.props;
+  //   if (web3.eth.accounts.length === 0) {
+  //     this.setState({
+  //       account: "",
+  //       accountError: true,
+  //     });
+  //     return;
+  //   }
 
-    web3.eth.Contract.setProvider(web3.currentProvider);
-    const instance = new web3.eth.Contract(jsonInterface, constractAddress);
+  //   web3.eth.Contract.setProvider(web3.currentProvider);
+  //   const instance = new web3.eth.Contract(jsonInterface, constractAddress);
 
-    // contract.methods.somFunc().send({from: ....})
-    // .on('receipt', function(){
-    //     ...
-    // });
+  //   // contract.methods.somFunc().send({from: ....})
+  //   // .on('receipt', function(){
+  //   //     ...
+  //   // });
 
-    const accounts = await web3.eth.requestAccounts();
-    console.log('web3.eth.accounts: ', web3.eth.accounts)
-    console.log('accounts: ', accounts)
-    const balance  = instance && await instance.methods.balanceOf(accounts[0]).call();
-    console.log('balance: ', balance)
-    console.log('instance: ', instance)
-    this.setState({
-      account: accounts[0],
-      accounts: accounts,
-      accountError: false,
-      balance: balance,
-      contractAddress: instance._address,
-      contractInstance: instance,
-    });
-  }
+  //   const accounts = await web3.eth.requestAccounts();
+  //   console.log('web3.eth.accounts: ', web3.eth.accounts)
+  //   console.log('accounts: ', accounts)
+  //   const balance  = instance && await instance.methods.balanceOf(accounts[0]).call();
+  //   console.log('balance: ', balance)
+  //   console.log('instance: ', instance)
+  //   this.setState({
+  //     account: accounts[0],
+  //     accounts: accounts,
+  //     accountError: false,
+  //     balance: balance,
+  //     contractAddress: instance._address,
+  //     contractInstance: instance,
+  //   });
+  // }
 
    onFinish = async (values) => {
-    const { contractInstance, account } = this.state;
+    const { contractInstance, account } = this.props;
     const { name, symbol, tokens } = values;
     console.log('Received values of form:', name, symbol, tokens);
     const result  = await contractInstance.methods.create(name, symbol).send({ from: account });
@@ -66,14 +60,12 @@ export default class extends React.Component {
   };
 
   render() {
-
+    const { contractInstance, account, contractAddress } = this.props;
     return (
       <div>
         <div>
-          <h3>MetaCoin</h3>
-          <p>Contract address: {this.state.contractAddress}</p>
-          <p>Account: {this.state.accountError ? "No accounts found" : this.state.account}</p>
-          <p>Balance: {this.state.balance}</p>
+          <p>Contract address: {contractAddress}</p>
+          <p>Account: {account}</p>
         </div>
         <Form name="dynamic_form_nest_item" onFinish={this.onFinish} autoComplete="off">
           <Form.Item

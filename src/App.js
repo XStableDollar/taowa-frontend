@@ -27,6 +27,9 @@ import getWeb3 from "./util/getWeb3";
 
 const appStyles = {}
 
+const constractAddress = '0x09554150b1d44d0dc012813f4b6916fc23471911';
+const jsonInterface = require("./abi.json");
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,13 +40,44 @@ class App extends React.Component {
 
   async componentWillMount() {
     const web3 = await getWeb3();
+    console.log('app.js: web3: ', web3)
+
+    // if (web3.eth.accounts.length === 0) {
+    //   this.setState({
+    //     account: "",
+    //     accountError: true,
+    //   });
+    //   return;
+    // }
+
+    web3.eth.Contract.setProvider(web3.currentProvider);
+    const instance = new web3.eth.Contract(jsonInterface, constractAddress);
+
+    // contract.methods.somFunc().send({from: ....})
+    // .on('receipt', function(){
+    //     ...
+    // });
+
+    const accounts = await web3.eth.requestAccounts();
+    console.log('web3.eth.accounts: ', web3.eth.accounts)
+    console.log('accounts: ', accounts)
+    const balance  = instance && await instance.methods.balanceOf(accounts[0]).call();
+    console.log('balance: ', balance)
+    console.log('instance: ', instance)
     this.setState({
       web3,
+      account: accounts[0],
+      accounts: accounts,
+      accountError: false,
+      balance: balance,
+      contractAddress: instance._address,
+      contractInstance: instance,
     });
-    console.log('app.js: web3: ', web3)
   }
 
   render() {
+    const { account, contractAddress, contractInstance } = this.state;
+    const props = { account, contractAddress, contractInstance };
     return (
       <div className={appStyles.app}>
         <div className={appStyles.appHeader}>
@@ -66,8 +100,8 @@ class App extends React.Component {
             <p>Web3 is loading</p>}
         </div>
         <hr />
-        {this.state.web3 ? <Create web3={this.state.web3} /> : null}
-        {this.state.web3 ? <List web3={this.state.web3} /> : null}
+        {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
+        {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
       </div>
     );
   }
