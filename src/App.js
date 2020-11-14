@@ -40,6 +40,7 @@ class App extends React.Component {
     this.setState({
       web3,
     });
+    console.log('app.js: web3: ', web3)
   }
 
   render() {

@@ -35,15 +35,17 @@ export default class extends React.Component {
       console.log('instance: ', instance)
     } catch (err) {
       console.log(err);
-      return;
     }
-
-    const balance  = await instance.getBalance(this.props.web3.eth.accounts[0]);
+    const balance  = instance && await instance.getBalance(this.props.web3.eth.accounts[0]) || 0;
+    const accounts = await this.props.web3.eth.requestAccounts();
+    console.log('this.props.web3.eth.accounts: ', this.props.web3.eth.accounts)
+    console.log('accounts: ', accounts)
     this.setState({
-      account: this.props.web3.eth.accounts[0],
+      account: accounts[0],
+      accounts: accounts,
       accountError: false,
       balance: balance.toString(),
-      contractAddress: instance.address,
+      // contractAddress: instance.address,
     });
   }
 
