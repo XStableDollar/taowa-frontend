@@ -66,21 +66,6 @@ class App extends React.Component {
           <h2>套娃协议</h2>
           <p>无限资产的无限合成</p>
         </div>
-        <div className={appStyles.appIntro}>
-          {this.state.web3 ? (
-            <div>
-              <p>
-                Provider is MetaMask: {(this.state.web3.currentProvider).isMetaMask ? "yes" : "no"}
-              </p>
-              <p>
-                Provider is Mist: {(window).mist ? "yes" : "no"}
-              </p>
-              {(this.state.web3.currentProvider).host ?
-                <p>Provider is {(this.state.web3.currentProvider).host}</p> : null}
-            </div>
-          ) :
-            <p>Web3 is loading</p>}
-        </div>
         <hr />
         {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
         {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
