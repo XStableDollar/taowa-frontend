@@ -3,31 +3,13 @@ import './App.css';
 import "antd/dist/antd.css";
 import Create from './components/Create';
 import List from './components/List';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <h2>套娃协议</h2>
-//       <h3>无限资产的无限合成 </h3>
-//       <div>
-//         <Create />
-//       </div>
-//       <div>
-//         <List />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import Web3 from "web3";
 import getWeb3 from "./util/getWeb3";
 
 const appStyles = {}
 
-const constractAddress = '0x09554150b1d44d0dc012813f4b6916fc23471911';
+const constractAddress = '0x8835F21613672fA18f5716aB0ee4878045eCf5EE';
 const jsonInterface = require("./abi.json");
 
 class App extends React.Component {
