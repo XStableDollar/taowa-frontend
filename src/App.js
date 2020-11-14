@@ -68,6 +68,7 @@ class App extends React.Component {
         </div>
         <hr />
         {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
+        <hr />
         {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
       </div>
     );

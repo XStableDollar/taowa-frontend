@@ -1,5 +1,6 @@
 import React from 'react';
-import { List, Card } from 'antd';
+import { List, Input, Card, Button, Form, Space } from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import * as TruffleContract from 'truffle-contract';
 // import * as Web3 from "web3";
 const Web3 = require('web3');
@@ -10,7 +11,8 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      customAssets: []
+      customAssets: [],
+      tokens: []
     }
   }
   async componentWillMount() {
@@ -61,6 +63,31 @@ export default class extends React.Component {
       console.log('error: ', error)
     }
   }
+
+  onFormFinish = (values) => {
+    console.log('Received values of form:', values);
+    const addressArr = [];
+    const amountArr = [];
+    values.tokens.forEach(tokenInfo => {
+      addressArr.push(tokenInfo.address);
+      amountArr.push(tokenInfo.amount);
+    })
+    this.setState({ tokens: values.tokens, addressArr, amountArr })
+  }
+  mintMulti = async (assetInfo) => {
+    const { contractInstance, account } = this.props;
+    const { totalAssets, customAssets, tokens, addressArr, amountArr } = this.state;
+    const { target } = assetInfo;
+    console.log('Received values of form:', tokens, addressArr, amountArr);
+    console.log('target: ', target)
+    const result  = await contractInstance.methods.mintMulti2(target, addressArr, amountArr).send({ from: account });
+    console.log('result: ', result)
+  };
+
+  async redeem() {
+
+  }
+
   render() {
     const { contractInstance, account, contractAddress } = this.props;
     const { totalAssets, customAssets } = this.state;
@@ -76,15 +103,63 @@ export default class extends React.Component {
                 <p>{item.depositedAssets[0].substr(0, 10)}</p>
                 <p>{item.depositedAssets[1].substr(0, 10)}</p>
               </div>
+              <div>
+                <Button type="primary" onClick={() => this.mintMulti(item)}>Deposit</Button>
+                <Button onClick={() => this.redeem(item)}>Redeem</Button>
+              </div>
             </Card>
           </List.Item>
         )}
       />
+    );
+
+    const formElem = (
+      <Form name="dynamic_form_nest_item" onFinish={this.onFormFinish} autoComplete="off">
+        <Form.List name="tokens">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(field => (
+                <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <Form.Item
+                    {...field}
+                    label="Address"
+                    name={[field.name, 'address']}
+                    fieldKey={[field.fieldKey, 'address']}
+                    rules={[{ required: true, message: 'Missing Address' }]}
+                  >
+                    <Input placeholder="Address" />
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    label="Amount"
+                    name={[field.name, 'amount']}
+                    fieldKey={[field.fieldKey, 'amount']}
+                    rules={[{ required: true, message: 'Missing Amount' }]}
+                  >
+                    <Input placeholder="Amount" />
+                  </Form.Item>
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Add field
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
     )
     return (
       <div>
         <span>Total assets: {totalAssets}</span>
-
+        {formElem}
         {customAssetsElem}
       </div>
     );
