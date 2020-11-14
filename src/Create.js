@@ -1,46 +1,19 @@
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Space } from 'antd';
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
-
-const Demo = () => {
-  const onFinish = (values) => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+export default () => {
+  const onFinish = values => {
+    console.log('Received values of form:', values);
   };
 
   return (
-    <Form
-      {...layout}
-      name="basic"
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    >
+    <Form name="dynamic_form_nest_item" onFinish={onFinish} autoComplete="off">
       <Form.Item
-        label="Username"
-        name="username"
+        label="Name"
+        name="name"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
           },
         ]}
       >
@@ -48,23 +21,52 @@ const Demo = () => {
       </Form.Item>
 
       <Form.Item
-        label="Password"
-        name="password"
+        label="Symbol"
+        name="symbol"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
           },
         ]}
       >
-        <Input.Password />
+        <Input />
       </Form.Item>
 
-      <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
-
-      <Form.Item {...tailLayout}>
+      <Form.List name="tokens">
+        {(fields, { add, remove }) => (
+          <>
+            {fields.map(field => (
+              <Space key={field.key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                <Form.Item
+                  {...field}
+                  label="Address"
+                  name={[field.name, 'first']}
+                  fieldKey={[field.fieldKey, 'first']}
+                  rules={[{ required: true, message: 'Missing Address' }]}
+                >
+                  <Input placeholder="Address" />
+                </Form.Item>
+                <Form.Item
+                  {...field}
+                  label="Amount"
+                  name={[field.name, 'last']}
+                  fieldKey={[field.fieldKey, 'last']}
+                  rules={[{ required: true, message: 'Missing Amount' }]}
+                >
+                  <Input placeholder="Amount" />
+                </Form.Item>
+                <MinusCircleOutlined onClick={() => remove(field.name)} />
+              </Space>
+            ))}
+            <Form.Item>
+              <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                Add field
+              </Button>
+            </Form.Item>
+          </>
+        )}
+      </Form.List>
+      <Form.Item>
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
@@ -72,5 +74,3 @@ const Demo = () => {
     </Form>
   );
 };
-
-export default Demo;
