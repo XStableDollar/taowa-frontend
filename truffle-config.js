@@ -27,11 +27,11 @@ module.exports = {
       gasPrice: web3.utils.toWei("5", "gwei"),
       network_id: "*" // Match any network id
     },
-    binance: {
+    bsc: {
       provider: binanceProvider,
       gas: 8000000,
       gasPrice: web3.utils.toWei("10", "gwei"),
-      network_id: "3",
+      network_id: "97",
       // from: '0x8f4E659b586A0d279BA674351C26fBcf2e55a5C3',
     },
     // ropsten: {
