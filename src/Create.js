@@ -1,5 +1,10 @@
 import { Form, Input, Button, Space } from 'antd';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import * as TruffleContract from 'truffle-contract';
+// import * as Web3 from "web3";
+const Web3 = require('web3');
+// import BigNumber from "bignumber.js"
+const BigNumber = require('bignumber.js');
 
 export default () => {
   const onFinish = values => {

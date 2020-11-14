@@ -1,0 +1,6 @@
+{
+  "MAINNET_PRIVATE_KEY": "8ca5b2e0e69011d7ad6b5e9684df52d8efe79ff77d12716ac66a6ad813804914",
+  "ROPSTEN_PRIVATE_KEY": "8ca5b2e0e69011d7ad6b5e9684df52d8efe79ff77d12716ac66a6ad813804914",
+  "BINANCE_PRIVATE_KEY": "8ca5b2e0e69011d7ad6b5e9684df52d8efe79ff77d12716ac66a6ad813804914",
+  "binanceUrl": "https://bsc-dataseed.binance.org/"
+}
