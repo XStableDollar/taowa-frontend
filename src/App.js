@@ -66,8 +66,13 @@ class App extends React.Component {
         <div className="App-header">
           <img src={logo} alt="logo" />
           <h1 style={{color: "white"}}>套娃协议</h1>
-          <p>无限资产的无限合成</p>
+          <p>资产的无限合成</p>
+
+          <p>BSC RPC：https://data-seed-prebsc-1-s1.binance.org:8545/</p>
+          <p><a href="https://testnet.binance.org/faucet-smart" target="_blank"> bsc水龙头</a></p>
+          <p><a href="https://testnet.bscscan.com/" target="_blank"> bsc区块浏览器</a></p>
         </div>
+
         <div className="App">
           {this.state.web3 ? <Create web3={this.state.web3} {...props} /> : null}
           {this.state.web3 ? <List web3={this.state.web3} {...props} /> : null}
